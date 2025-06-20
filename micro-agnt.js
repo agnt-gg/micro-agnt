@@ -96,26 +96,27 @@ class Agent {
         }
       },
       execute_code: {
-        description: 'Executes a block of sandboxed JavaScript code. This is powerful but should be used for complex data processing or logic that cannot be handled by other tools. Globals available: `fetch`, `Buffer`, `console`, and `fs` (with `readFile`, `writeFile`). No `require()`. Top-level `await` is supported. Example: `const data = JSON.parse(await fs.readFile("in.json", "utf8")); console.log(data.length);`',
+        description: 'Executes a sandboxed block of JavaScript. The code MUST return a value. Do not declare a function and then call it; instead, write the logic directly and use a `return` statement for the final output. Example: `const response = await fetch("..."); return response.json();`',
         parameters: {
           type: 'object',
-          properties: { code: { type: 'string', description: 'The JavaScript code to execute. E.g., `await fs.writeFile("out.txt", "done");`' } },
+          properties: { code: { type: 'string', description: 'The JavaScript code to execute.' } },
           required: ['code']
         },
         execute: async ({ code }) => {
-          const output = [];
           const sandbox = {
             fetch,
             fs: { writeFile: fs.writeFile, readFile: fs.readFile },
-            console: { log: (...args) => output.push(args.join(' ')) },
             Buffer
           };
           
           try {
             const result = await runInNewContext(`(async()=>{${code}})()`, sandbox, { timeout: 10000 });
-            return { output, result };
+            if (result === undefined) {
+              return 'Code executed successfully, but returned no value. The code must end with a return statement to produce a result.';
+            }
+            return result;
           } catch (error) {
-            return { output, error: error.message };
+            return `Error: ${error.message}\\nStack: ${error.stack}`;
           }
         }
       }
@@ -144,7 +145,7 @@ class Agent {
 
         try {
           const messages = [
-            { role: 'system', content: `You are a helpful AI assistant that uses tools to accomplish tasks. Analyze the user's request and the available tools, then select the most appropriate tool for each step by referencing the provided schemas. Think step-by-step and chain tool calls to solve complex problems. When you have a final answer, provide it directly to the user.` },
+            { role: 'system', content: `You are a helpful AI assistant that uses tools to accomplish tasks. Analyze the user's request and the available tools, then select the most appropriate tool for each step by referencing the provided schemas. Think step-by-step and chain tool calls to solve complex problems. IMPORTANT: For the 'execute_code' tool, do NOT use 'require()'. A global 'fetch' function is available for HTTP requests. When you have a final answer, provide it directly to the user.` },
             { role: 'user', content: input }
           ];
 
