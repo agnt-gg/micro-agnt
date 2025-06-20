@@ -66,7 +66,7 @@ GOOGLE_SEARCH_ENGINE_ID="..."
 Once setup is complete, you can start the agent from within the `micro-agnt` directory:
 
 ```bash
-node ai.js
+node micro-agnt.js
 ```
 
 You'll see a prompt `> ` when the agent is ready for your command. To exit, type `exit` and press Enter.
