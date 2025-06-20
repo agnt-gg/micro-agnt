@@ -11,6 +11,7 @@ This document outlines 108 specific, high-profit business tasks that can be auto
 - **JavaScript Execution**: Complex calculations, data processing, and API integrations
 - **File System Operations**: Document processing, report generation, and data management
 - **Web Search**: Real-time research, competitive intelligence, and market analysis
+- **Web Scraping**: Extracting data from websites for research and analysis
 - **LLM Reasoning**: Content creation, analysis, and strategic insights
 
 ---
