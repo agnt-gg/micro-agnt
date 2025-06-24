@@ -1,0 +1,17 @@
+{
+  "name": "micro-agnt",
+  "version": "1.0.0",
+  "description": "A micro agent script",
+  "main": "micro-agnt.js",
+  "type": "module",
+  "scripts": {
+    "start": "node micro-agnt.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "openai": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
