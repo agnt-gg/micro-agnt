@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "dotenv": "^16.0.0",
-    "openai": "^4.0.0"
+    "openai": "^4.0.0",
+    "jsdom": "^24.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "engines": {
     "node": ">=18.0.0"
